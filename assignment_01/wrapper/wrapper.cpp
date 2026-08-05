@@ -1,5 +1,5 @@
-#include "../assignment_01/src/csr.h"
-#include "../assignment_01/src/sssp.h"
+#include "../src/csr.h"
+#include "../src/sssp.h"
 
 #include <iostream>
 #include <fstream>
