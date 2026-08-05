@@ -1,32 +1,34 @@
 #include "dfs.h"
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 void DFSUtil(
     int current,
-    const vector<int>& rowPtr,
-    const vector<int>& colIndex,
+    const CSRGraph& graph,
     vector<bool>& visited
 )
 {
     visited[current] = true;
 
+    if (graph.row_ptr.size() - 1 <= 100)
+{
     cout << current << " ";
+}
 
-    for (int i = rowPtr[current];
-         i < rowPtr[current + 1];
-         i++)
+    for (int index = graph.row_ptr[current];
+         index < graph.row_ptr[current + 1];
+         index++)
     {
-        int neighbour = colIndex[i];
+        int neighbour = graph.col_idx[index];
 
         if (!visited[neighbour])
         {
             DFSUtil(
                 neighbour,
-                rowPtr,
-                colIndex,
+                graph,
                 visited
             );
         }
@@ -34,18 +36,17 @@ void DFSUtil(
 }
 
 void DFS(
-    const vector<int>& rowPtr,
-    const vector<int>& colIndex,
-    int vertices,
+    const CSRGraph& graph,
     int source
 )
 {
+    int vertices = graph.row_ptr.size() - 1;
+
     vector<bool> visited(vertices, false);
 
     DFSUtil(
         source,
-        rowPtr,
-        colIndex,
+        graph,
         visited
     );
 
