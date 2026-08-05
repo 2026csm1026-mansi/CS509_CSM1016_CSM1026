@@ -1,7 +1,9 @@
 #ifndef CSR_H
 #define CSR_H
+
 #include <vector>
 #include <utility>
+#include <string>
 
 struct CSRGraph
 {
@@ -12,10 +14,17 @@ struct CSRGraph
 
 using WeightedAdjList = std::vector<std::vector<std::pair<int, int>>>;
 
+// Read graph from adjacency-list file
+bool readGraph(
+    const std::string& filename,
+    std::vector<std::vector<int>>& adjacencyList,
+    int& vertices
+);
+
 // Weighted adjacency list → CSR
 CSRGraph convertToCSR(const WeightedAdjList& adjacencyList);
 
-// For an unweighted graph, every edge gets value 1.
+// Unweighted adjacency list → CSR
 CSRGraph convertToCSR(const std::vector<std::vector<int>>& adjacencyList);
 
 #endif
