@@ -13,7 +13,10 @@ void DFSUtil(
 {
     visited[current] = true;
 
+    if (graph.row_ptr.size() - 1 <= 100)
+{
     cout << current << " ";
+}
 
     for (int index = graph.row_ptr[current];
          index < graph.row_ptr[current + 1];

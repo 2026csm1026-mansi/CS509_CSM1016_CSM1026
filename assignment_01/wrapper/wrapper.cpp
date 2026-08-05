@@ -127,13 +127,13 @@ if (!readGraph(filename, adjacencyList, vertices, source))
     // CSR conversion is preprocessing (NOT timed)
     CSRGraph graph = convertToCSR(adjacencyList);
 
-
-    auto start = chrono::steady_clock::now();
-
-    BFS(graph, source);
-    cout << "\nAlgorithm: BFS\n";
+ cout << "\nAlgorithm: BFS\n";
 cout << "Source: " << source << "\n";
 cout << "Traversal: ";
+
+auto start = chrono::steady_clock::now();
+
+    BFS(graph, source);
 
     auto end = chrono::steady_clock::now();
 
@@ -209,12 +209,17 @@ if (!readGraph(filename, adjacencyList, vertices, source))
     // CSR conversion is preprocessing (NOT timed)
     CSRGraph graph = convertToCSR(adjacencyList);
 
-    auto start = chrono::steady_clock::now();
-
-    DFS(graph, source);
     cout << "\nAlgorithm: DFS\n";
     cout << "Source: " << source << "\n";
     cout << "Traversal: ";
+
+    auto start = chrono::steady_clock::now();
+
+    DFS(graph, source);
+    if (vertices > 100)
+{
+    cout << "\nTraversal omitted for large graph.\n";
+}
     auto end = chrono::steady_clock::now();
 
     double executionTime =
