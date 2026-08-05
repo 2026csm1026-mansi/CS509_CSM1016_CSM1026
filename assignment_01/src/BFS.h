@@ -1,7 +1,7 @@
 #ifndef BFS_H
 #define BFS_H
 
-#include "csr1.h"
+#include "csr.h"
 
 void BFS(
     const CSRGraph& graph,

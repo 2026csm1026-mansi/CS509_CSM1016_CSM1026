@@ -1,5 +1,10 @@
+//#include "../src/csr.h"
+//#include "../src/sssp.h"
+//#include "../src/csr.h"
 #include "../src/csr.h"
 #include "../src/sssp.h"
+#include "../src/bfs.h"
+#include "../src/dfs.h"
 
 #include <iostream>
 #include <fstream>
@@ -65,8 +70,79 @@ int main()
 
 void runBFS()
 {
+    int testChoice;
+    string filename;
+
     cout << "\n========== BFS ==========\n";
-    cout << "BFS module will be added here.\n";
+    cout << "1. graph_10.txt\n";
+    cout << "2. graph_100.txt\n";
+    cout << "3. graph_10000.txt\n";
+    cout << "4. graph_50000.txt\n";
+    cout << "5. graph_100000.txt\n";
+    cout << "0. Back\n";
+
+    cout << "\nEnter your choice: ";
+    cin >> testChoice;
+
+    if (testChoice == 0)
+        return;
+
+    switch (testChoice)
+    {
+        case 1:
+            filename = "assignment_01/tests/graph_10.txt";
+            break;
+
+        case 2:
+            filename = "assignment_01/tests/graph_100.txt";
+            break;
+
+        case 3:
+            filename = "assignment_01/tests/graph_10000.txt";
+            break;
+
+        case 4:
+            filename = "assignment_01/tests/graph_50000.txt";
+            break;
+
+        case 5:
+            filename = "assignment_01/tests/graph_100000.txt";
+            break;
+
+        default:
+            cout << "\nInvalid Test Case!\n";
+            return;
+    }
+
+   vector<vector<int>> adjacencyList;
+int vertices;
+int source;
+
+if (!readGraph(filename, adjacencyList, vertices, source))
+{
+    cout << "\nError opening input file.\n";
+    return;
+}
+
+    // CSR conversion is preprocessing (NOT timed)
+    CSRGraph graph = convertToCSR(adjacencyList);
+
+
+    auto start = chrono::steady_clock::now();
+
+    BFS(graph, source);
+    cout << "\nAlgorithm: BFS\n";
+cout << "Source: " << source << "\n";
+cout << "Traversal: ";
+
+    auto end = chrono::steady_clock::now();
+
+    double executionTime =
+        chrono::duration<double, milli>(end - start).count();
+
+    cout << "\nExecution Time: "
+         << executionTime
+         << " ms\n";
 }
 
 
@@ -76,8 +152,77 @@ void runBFS()
 
 void runDFS()
 {
+    int testChoice;
+    string filename;
+
     cout << "\n========== DFS ==========\n";
-    cout << "DFS module will be added here.\n";
+    cout << "1. graph_10.txt\n";
+    cout << "2. graph_100.txt\n";
+    cout << "3. graph_10000.txt\n";
+    cout << "4. graph_50000.txt\n";
+    cout << "5. graph_100000.txt\n";
+    cout << "0. Back\n";
+
+    cout << "\nEnter your choice: ";
+    cin >> testChoice;
+
+    if (testChoice == 0)
+        return;
+
+    switch (testChoice)
+    {
+        case 1:
+            filename = "assignment_01/tests/graph_10.txt";
+            break;
+
+        case 2:
+            filename = "assignment_01/tests/graph_100.txt";
+            break;
+
+        case 3:
+            filename = "assignment_01/tests/graph_10000.txt";
+            break;
+
+        case 4:
+            filename = "assignment_01/tests/graph_50000.txt";
+            break;
+
+        case 5:
+            filename = "assignment_01/tests/graph_100000.txt";
+            break;
+
+        default:
+            cout << "\nInvalid Test Case!\n";
+            return;
+    }
+
+    vector<vector<int>> adjacencyList;
+int vertices;
+int source;
+
+if (!readGraph(filename, adjacencyList, vertices, source))
+    {
+        cout << "\nError opening input file.\n";
+        return;
+    }
+
+    // CSR conversion is preprocessing (NOT timed)
+    CSRGraph graph = convertToCSR(adjacencyList);
+
+    auto start = chrono::steady_clock::now();
+
+    DFS(graph, source);
+    cout << "\nAlgorithm: DFS\n";
+    cout << "Source: " << source << "\n";
+    cout << "Traversal: ";
+    auto end = chrono::steady_clock::now();
+
+    double executionTime =
+        chrono::duration<double, milli>(end - start).count();
+
+    cout << "\nExecution Time: "
+         << executionTime
+         << " ms\n";
 }
 
 

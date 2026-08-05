@@ -14,11 +14,12 @@ struct CSRGraph
 
 using WeightedAdjList = std::vector<std::vector<std::pair<int, int>>>;
 
-// Read graph from adjacency-list file
+// Read unweighted graph from file
 bool readGraph(
     const std::string& filename,
     std::vector<std::vector<int>>& adjacencyList,
-    int& vertices
+    int& vertices,
+    int& source
 );
 
 // Weighted adjacency list → CSR

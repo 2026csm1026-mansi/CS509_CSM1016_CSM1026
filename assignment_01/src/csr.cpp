@@ -1,39 +1,44 @@
-#include "csr1.h"
+#include "csr.h"
 
 #include <fstream>
 
-using namespace std;
-
 bool readGraph(
-    const string& filename,
-    vector<vector<int>>& adjacencyList,
-    int& vertices
+    const std::string& filename,
+    std::vector<std::vector<int>>& adjacencyList,
+    int& vertices,
+    int& source
 )
 {
-    ifstream inputFile(filename);
+    std::ifstream inputFile(filename);
 
     if (!inputFile.is_open())
     {
         return false;
     }
 
-    inputFile >> vertices;
+    int edges;
+    inputFile >> vertices >> edges;
 
     adjacencyList.resize(vertices);
 
-    for (int vertex = 0; vertex < vertices; vertex++)
+    for (int i = 0; i < vertices; i++)
     {
-        int neighbours;
-        inputFile >> neighbours;
+        int vertex;
+        int degree;
 
-        for (int i = 0; i < neighbours; i++)
+        inputFile >> vertex >> degree;
+
+        for (int j = 0; j < degree; j++)
         {
-            int adjacentVertex;
-            inputFile >> adjacentVertex;
+            int neighbour;
+            inputFile >> neighbour;
 
-            adjacencyList[vertex].push_back(adjacentVertex);
+            adjacencyList[vertex].push_back(neighbour);
         }
     }
+
+    std::string sourceLabel;
+    inputFile >> sourceLabel >> source;
 
     inputFile.close();
 
@@ -44,24 +49,24 @@ CSRGraph convertToCSR(const WeightedAdjList& adjacencyList)
 {
     CSRGraph graph;
 
-    size_t vertices = adjacencyList.size();
+    std::size_t vertices = adjacencyList.size();
 
     graph.row_ptr.resize(vertices + 1);
 
     graph.row_ptr[0] = 0;
 
-    for (size_t i = 0; i < vertices; i++)
+    for (std::size_t i = 0; i < vertices; i++)
     {
         graph.row_ptr[i + 1] =
             graph.row_ptr[i] + adjacencyList[i].size();
     }
 
-    size_t edges = graph.row_ptr[vertices];
+    std::size_t edges = graph.row_ptr[vertices];
 
     graph.col_idx.reserve(edges);
     graph.values.reserve(edges);
 
-    for (size_t i = 0; i < vertices; i++)
+    for (std::size_t i = 0; i < vertices; i++)
     {
         for (const auto& edge : adjacencyList[i])
         {
@@ -73,28 +78,28 @@ CSRGraph convertToCSR(const WeightedAdjList& adjacencyList)
     return graph;
 }
 
-CSRGraph convertToCSR(const vector<vector<int>>& adjacencyList)
+CSRGraph convertToCSR(const std::vector<std::vector<int>>& adjacencyList)
 {
     CSRGraph graph;
 
-    size_t vertices = adjacencyList.size();
+    std::size_t vertices = adjacencyList.size();
 
     graph.row_ptr.resize(vertices + 1);
 
     graph.row_ptr[0] = 0;
 
-    for (size_t i = 0; i < vertices; i++)
+    for (std::size_t i = 0; i < vertices; i++)
     {
         graph.row_ptr[i + 1] =
             graph.row_ptr[i] + adjacencyList[i].size();
     }
 
-    size_t edges = graph.row_ptr[vertices];
+    std::size_t edges = graph.row_ptr[vertices];
 
     graph.col_idx.reserve(edges);
     graph.values.reserve(edges);
 
-    for (size_t i = 0; i < vertices; i++)
+    for (std::size_t i = 0; i < vertices; i++)
     {
         for (int neighbour : adjacencyList[i])
         {
