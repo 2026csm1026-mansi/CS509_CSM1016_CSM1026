@@ -1,6 +1,5 @@
 #include "../src/csr.h"
 #include "../src/sssp.h"
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -29,7 +28,6 @@ int main(int argc, char* argv[])
 
     WeightedAdjList adjacencyList(V);
 
-    // Read adjacency-list input.
     for (int i = 0; i < V; i++)
     {
         int u, degree;
@@ -49,33 +47,58 @@ int main(int argc, char* argv[])
 
     file >> sourceLabel >> source;
 
-    // CSR conversion is preprocessing, so it is NOT timed.
     CSRGraph graph = convertToCSR(adjacencyList);
 
-    // Start timing immediately before SSSP.
     auto start = std::chrono::steady_clock::now();
 
     std::vector<long long> distances = sssp(graph, source);
-
-    // Stop timing immediately after SSSP.
     auto end = std::chrono::steady_clock::now();
 
     double executionTime =
         std::chrono::duration<double, std::milli>(end - start).count();
-
-    // Print result after timing.
     std::cout << "Algorithm: SSSP\n";
     std::cout << "Source: " << source << "\n";
-    std::cout << "Vertex Distance\n";
-
-    for (int i = 0; i < V; i++)
+    std::cout << "Vertices: " << V << "\n";
+    std::cout << "Edges: " << E << "\n";
+    if (V <= 100)
     {
-        std::cout << i << " ";
+        std::cout << "Vertex Distance\n";
 
-        if (distances[i] == std::numeric_limits<int>::max())
-            std::cout << "INF\n";
-        else
-            std::cout << distances[i] << "\n";
+        for (int i = 0; i < V; i++)
+        {
+            std::cout << i << " ";
+
+            if (distances[i] == std::numeric_limits<long long>::max())
+                std::cout << "INF\n";
+            else
+                std::cout << distances[i] << "\n";
+        }
+    }
+    else
+    {
+        std::cout << "Distances: first 10 and last 10 vertices\n";
+
+        for (int i = 0; i < 10; i++)
+        {
+            std::cout << i << " ";
+
+            if (distances[i] == std::numeric_limits<long long>::max())
+                std::cout << "INF\n";
+            else
+                std::cout << distances[i] << "\n";
+        }
+
+        std::cout << "...\n";
+
+        for (int i = V - 10; i < V; i++)
+        {
+            std::cout << i << " ";
+
+            if (distances[i] == std::numeric_limits<long long>::max())
+                std::cout << "INF\n";
+            else
+                std::cout << distances[i] << "\n";
+        }
     }
 
     std::cout << "Execution time: "
@@ -83,3 +106,4 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+
